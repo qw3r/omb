@@ -1,0 +1,9 @@
+- unless flash[:notice].blank?
+  .alert-message.info
+    .content= flash[:notice]
+- unless flash[:error].blank?
+  .alert-message.error
+    .content= flash[:error]
+- unless flash[:alert].blank?
+  .alert-message.warning
+    .content= flash[:alert]

@@ -1,11 +1,23 @@
 !!!
 %html
   %head
-    %title Ombrello
-    = stylesheet_link_tag    "application"
+    %title= content_for?(:title) ? yield(:title) : "Twitter Bootstrap"
+    = stylesheet_link_tag "application"
     = javascript_include_tag "application"
-    = csrf_meta_tags
+    = csrf_meta_tag
+    = yield(:head)
   %body
-    %p.notice= notice
-    %p.alert= alert
-    = yield
+    .topbar
+      .fill
+        .container
+          = render :partial => 'common/menu'
+    .container
+      .content
+        .page-header
+          = render :partial => 'common/header'
+        .row
+          .span12
+            = render :partial => 'common/flashes'
+            = yield
+        %footer
+        = render :partial => 'common/footer'
