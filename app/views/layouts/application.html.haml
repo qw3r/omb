@@ -19,5 +19,11 @@
           .span12
             = render :partial => 'common/flashes'
             = yield
+          
+          .span4
+            .sidebar
+              %h3 Actions
+              .well= yield :sidebar
+            
         %footer
         = render :partial => 'common/footer'

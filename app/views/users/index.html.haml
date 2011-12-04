@@ -1,0 +1,13 @@
+%h1 Listing users
+
+%table.zebra-striped
+  %tr
+    %th #
+    %th Name
+    %th Email
+    %th Messages (unread/all)
+    %th 
+  = render @users
+
+- content_for :sidebar do
+  = link_to 'New User', new_user_path

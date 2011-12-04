@@ -1,0 +1,13 @@
+%tr
+  %td= user.id
+  %td= user.name
+  %td= user.email
+  %td
+    -# - if user.messages
+      -# = user.messages.unread.count
+      -# /
+      -# = user.messages.count
+  %td
+    = link_to 'Show', user
+    = link_to 'Edit', edit_user_path(user)
+    = link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete
