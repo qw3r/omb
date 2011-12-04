@@ -9,6 +9,7 @@ gem 'sqlite3'
 gem 'devise'
 gem 'haml'
 gem 'haml-rails'
+gem 'omniauth-facebook'
 
 gem 'rspec-rails', group: [:test, :development]
 
