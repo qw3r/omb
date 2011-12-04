@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
     where(conditions).where(["lower(username) = :value OR lower(email) = :value", {value: login.downcase}]).first
   end
   
-  def self.find_for_facebook_oauth(access_token, signed_in_resource=nil)
+  def self.find_for_oauth_facebook(access_token, signed_in_resource=nil)
     data = access_token.extra.raw_info
     if user = User.find_by_email(data.email)
       user
