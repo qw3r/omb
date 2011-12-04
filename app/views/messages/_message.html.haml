@@ -1,0 +1,11 @@
+%tr
+  %td= message.author
+  %td= message.recipient
+  %td= message.subject
+  %td= message.body
+  %td= message.ancestry
+  %td= message.ancestry_depth
+  %td
+    = link_to 'Show', message
+    = link_to 'Edit', edit_message_path(message)
+    = link_to 'Destroy', message, :confirm => 'Are you sure?', :method => :delete

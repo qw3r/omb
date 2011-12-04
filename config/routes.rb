@@ -2,6 +2,10 @@ Ombrello::Application.routes.draw do
 
   devise_for :users, controllers: {omniauth_callbacks: 'users/omniauth_callbacks'}
   
+  resources :messages do
+    get :autocomplete_user_email, on: :collection
+  end
+  
   resources :users
   
 

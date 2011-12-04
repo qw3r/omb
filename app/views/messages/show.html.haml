@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Author:
+  = @message.author
+%p
+  %b Recipient:
+  = @message.recipient
+%p
+  %b Subject:
+  = @message.subject
+%p
+  %b Body:
+  = @message.body
+%p
+  %b Ancestry:
+  = @message.ancestry
+%p
+  %b Ancestry depth:
+  = @message.ancestry_depth
+
+= link_to 'Edit', edit_message_path(@message)
+\|
+= link_to 'Back', messages_path

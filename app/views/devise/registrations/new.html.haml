@@ -1,6 +1,7 @@
 %h2 Sign up
 = twitter_bootstrap_form_for resource, as: resource_name, url: registration_path(resource_name) do |f|
-  = devise_error_messages!
+  .alert-message.error
+    = devise_error_messages!
  
   = f.inputs 'Personal informations' do
     = f.text_field :firstname

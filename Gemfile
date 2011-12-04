@@ -12,6 +12,8 @@ gem 'devise'
 gem 'haml'
 gem 'haml-rails'
 gem 'omniauth-facebook'
+gem 'ancestry'
+gem 'rails3-jquery-autocomplete'
 
 gem 'rspec-rails', group: [:test, :development]
 
@@ -39,8 +41,7 @@ gem 'jquery-rails'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
-# Use unicorn as the web server
-# gem 'unicorn'
+gem 'thin'
 
 # Deploy with Capistrano
 # gem 'capistrano'

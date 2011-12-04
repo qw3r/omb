@@ -1,0 +1,16 @@
+%h1 Listing messages
+
+%table.zebra-striped
+  %tr
+    %th Author
+    %th Recipient
+    %th Subject
+    %th Date
+    %th
+
+- content_for :sidebar do
+  %p= link_to 'Create message', new_message_path
+  %p.divider
+  %p= link_to 'Inbox', '#'
+  %p= link_to 'Sent messages', '#'
+  %p= link_to 'Darfts', '#' 

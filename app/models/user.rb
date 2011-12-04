@@ -6,16 +6,27 @@ class User < ActiveRecord::Base
 
   
   attr_accessor :login
-  # Setup accessible (or protected) attributes for your model
+  
   attr_accessible :login, :firstname, :lastname, :username, :email, :password, :password_confirmation, :remember_me
   
+  has_many :sent_messages, class_name: 'Message', foreign_key: 'author_id'
+  has_and_belongs_to_many :received_messages, class_name: 'Message', join_table: 'messages_recipients', foreign_key: 'recipient_id' 
   
+  validates :username, uniqueness: {case_sensitive: false}
+  
+  # TODO: implemenet folders (Inbox, Sent, Draft, Trash...)
   
   def name
     "#{firstname} #{lastname}"
   end
+  
+  def to_recipient
+    s = email
+    s = "#{name} <#{s}>" unless name == ' '
+    s
+  end
 
-
+  # class methods
   def self.find_for_authentication(warden_conditions)
     conditions = warden_conditions.dup
     login = conditions.delete(:login)
@@ -27,7 +38,7 @@ class User < ActiveRecord::Base
     if user = User.find_by_email(data.email)
       user
     else # Create a user with a stub password. 
-      User.create!(email: data.email, password: Devise.friendly_token[0,20]) 
+      User.create!(email: data.email, password: Devise.friendly_token[0,20], username: data.email) 
     end
   end
   
