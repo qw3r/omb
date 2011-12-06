@@ -11,33 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111204184640) do
-
-  create_table "messages", :force => true do |t|
-    t.integer  "author_id"
-    t.integer  "recipient_id"
-    t.string   "subject"
-    t.text     "body"
-    t.boolean  "active",         :default => true
-    t.string   "ancestry"
-    t.integer  "ancestry_depth", :default => 0
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "messages", ["ancestry"], :name => "index_messages_on_ancestry"
-  add_index "messages", ["ancestry_depth"], :name => "index_messages_on_ancestry_depth"
-  add_index "messages", ["author_id"], :name => "index_messages_on_author_id"
-  add_index "messages", ["recipient_id"], :name => "index_messages_on_recipient_id"
-
-  create_table "messages_recipients", :id => false, :force => true do |t|
-    t.integer "message_id",   :null => false
-    t.integer "recipient_id", :null => false
-  end
-
-  add_index "messages_recipients", ["message_id", "recipient_id"], :name => "index_messages_recipients_on_message_id_and_recipient_id", :unique => true
-  add_index "messages_recipients", ["message_id"], :name => "index_messages_recipients_on_message_id"
-  add_index "messages_recipients", ["recipient_id"], :name => "index_messages_recipients_on_recipient_id"
+ActiveRecord::Schema.define(:version => 20111204012932) do
 
   create_table "users", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false

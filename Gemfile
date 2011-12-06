@@ -14,6 +14,7 @@ gem 'haml-rails'
 gem 'omniauth-facebook'
 gem 'ancestry'
 gem 'rails3-jquery-autocomplete'
+gem 'flag_shih_tzu'
 
 gem 'rspec-rails', group: [:test, :development]
 

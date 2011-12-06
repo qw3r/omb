@@ -5,24 +5,26 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :lockable, :omniauthable
 
   
+  has_many :received_messages, as: :received_messageable, class_name: 'Message'
+  has_many :sent_messages, as: :sent_messageable, class_name: 'Message'
+  
+  
   attr_accessor :login
   
   attr_accessible :login, :firstname, :lastname, :username, :email, :password, :password_confirmation, :remember_me
   
-  has_many :sent_messages, class_name: 'Message', foreign_key: 'author_id'
-  has_and_belongs_to_many :received_messages, class_name: 'Message', join_table: 'messages_recipients', foreign_key: 'recipient_id' 
   
   validates :username, uniqueness: {case_sensitive: false}
   
   # TODO: implemenet folders (Inbox, Sent, Draft, Trash...)
   
   def name
-    "#{firstname} #{lastname}"
+    "#{firstname} #{lastname}" unless firstname.blank? and lastname.blank?
   end
   
   def to_recipient
     s = email
-    s = "#{name} <#{s}>" unless name == ' '
+    s = "#{name} <#{s}>" if name.present?
     s
   end
 

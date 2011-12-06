@@ -1,11 +1,18 @@
 class Message < ActiveRecord::Base
-  has_ancestry orphan_strategy: :restrict, cache_depth: true
-
-  belongs_to :author, class_name: 'User'
-  has_and_belongs_to_many :recipients, class_name: 'User', join_table: 'messages_recipients', association_foreign_key: 'recipient_id'
+  include FlagShihTzu
   
-  attr_accessor :to
-  attr_accessible :to
+  has_ancestry
+  has_flags 1 => :read,
+            2 => :sender_deleted,
+            3 => :recipient_deleted,
+            4 => :sender_purged,
+            5 => :recipient_purged
+            
 
-
+  belongs_to :received_messageable, polymorphic: true
+  belongs_to :sent_messageable, polymorphic: true
+  
+  validates :subject, :body, presence: true
+    
 end
+
