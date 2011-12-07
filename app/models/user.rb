@@ -5,18 +5,62 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :lockable, :omniauthable
 
   
-  has_many :received_messages, as: :received_messageable, class_name: 'Message'
-  has_many :sent_messages, as: :sent_messageable, class_name: 'Message'
-  
-  
+  has_many :received_messages_relation, as: :received_messageable, class_name: 'Message'
+  has_many :sent_messages_relation, as: :sent_messageable, class_name: 'Message'
+   
   attr_accessor :login
   
   attr_accessible :login, :firstname, :lastname, :username, :email, :password, :password_confirmation, :remember_me
   
-  
   validates :username, uniqueness: {case_sensitive: false}
   
-  # TODO: implemenet folders (Inbox, Sent, Draft, Trash...)
+  def messages(deleted = false)
+    Message.for_user self, deleted
+  end
+  
+  def deleted_messages
+    messages true
+  end
+  
+  def received_messages(deleted = false)
+    received_messages_relation.send "#{'not_' unless deleted}deleted_by_recipient"
+  end
+  
+  def sent_messages(deleted = false)
+    sent_messages_relation.send "#{'not_' unless deleted}deleted_by_sender"
+  end
+  
+  def send_message(to, args = {})
+    message = Message.create! message_attributes
+    sent_messages_relation << message
+    to.received_messages_relation << message
+    message
+  end
+  
+  def reply_to(message, args = {})
+    reply = send_message(message.from, args)
+    # reply.subject = 'RE: ' << message.subject
+    reply.parent = message
+    reply.save
+    reply
+  end
+
+  def delete_message(message)
+    if message.received_messageable == self
+      if message.deleted_by_recipient?
+        message.update_attribute :purged_by_recipient, true
+      else
+        message.update_attribute :deleted_by_recipient, true
+      end
+    elsif message.sent_messageable == self
+      if message.deleted_by_sender?
+        message.update_attribute :purged_by_sender, true
+      else
+        message.update_attribute :deleted_by_sender, true
+      end
+    end
+  end
+  
   
   def name
     "#{firstname} #{lastname}" unless firstname.blank? and lastname.blank?

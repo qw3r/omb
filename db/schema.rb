@@ -11,7 +11,25 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111204012932) do
+ActiveRecord::Schema.define(:version => 20111204174642) do
+
+  create_table "messages", :force => true do |t|
+    t.integer  "received_messageable_id"
+    t.string   "received_messageable_type"
+    t.integer  "sent_messageable_id"
+    t.string   "sent_messageable_type"
+    t.string   "subject"
+    t.text     "body"
+    t.integer  "flags",                     :default => 0, :null => false
+    t.string   "ancestry"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "messages", ["ancestry"], :name => "index_messages_on_ancestry"
+  add_index "messages", ["flags"], :name => "index_messages_on_flags"
+  add_index "messages", ["received_messageable_id", "received_messageable_type"], :name => "index_rmi_rmt"
+  add_index "messages", ["sent_messageable_id", "sent_messageable_type"], :name => "index_smi_smt"
 
   create_table "users", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false

@@ -3,16 +3,49 @@ class Message < ActiveRecord::Base
   
   has_ancestry
   has_flags 1 => :read,
-            2 => :sender_deleted,
-            3 => :recipient_deleted,
-            4 => :sender_purged,
-            5 => :recipient_purged
+            2 => :deleted_by_sender,
+            3 => :deleted_by_recipient,
+            4 => :purged_by_sender,
+            5 => :purged_by_recipient,
+            flag_query_mode: :bit_operator 
             
 
   belongs_to :received_messageable, polymorphic: true
   belongs_to :sent_messageable, polymorphic: true
   
+  
+  scope :deleted, sender_deleted.recipient_deleted
+  scope :for_user, lambda { |*args| where(["(sent_messageable_id = :uid AND #{Message.flags_condition(args.last, :deleted_by_sender)} AND #{Message.not_purged_by_sender_condition}) OR (received_messageable_id = :uid AND #{Message.flags_condition(args.last, :deleted_by_recipient)} AND #{Message.not_purged_by_recipient_condition})", uid: args.first.id ]) }
+                                                                              
   validates :subject, :body, presence: true
+ 
+  def self.flags_condition(cond, flag)
+    flag = flag.to_s << '_condition' 
+    Message.send(cond ? flag : 'not_' + flag)
+  end
+  
+  def unread?
+    !read?
+  end
+  
+  def mark_as_read
+    update_attribute :read, true
+  end
+  
+  def mark_as_unread
+    update_attribute :read, :false
+  end
+  
+  def from
+    sent_messageable
+  end
     
+  def to
+    received_messageable
+  end
+  
+  def thread
+    root.subtree
+  end
 end
 
