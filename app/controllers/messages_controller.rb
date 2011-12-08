@@ -1,11 +1,11 @@
 class MessagesController < ApplicationController
   before_filter :authenticate_user!
-  autocomplete :user, :email, full: true, extra_data: [:firstname, :lastname], display_value: :to_recipient
+  autocomplete :user, :email, full: true
   
   # GET /messages
   # GET /messages.json
   def index
-    @messages = current_user.received_messages.all
+    @messages = current_user.messages
 
     respond_to do |format|
       format.html # index.html.erb
@@ -29,7 +29,7 @@ class MessagesController < ApplicationController
   def new
     #if params[:in_reply_to]
     #  if @parent = Message.find(params[:in_reply_to])
-    @message = Message.new author: current_user
+    @message = Message.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -45,10 +45,10 @@ class MessagesController < ApplicationController
   # POST /messages
   # POST /messages.json
   def create
-    @message = Message.new(params[:message].merge!({author: current_user}))
+    @message = current_user.send_message(User.find_by_email(params[:message].delete(:to)), params[:message])
 
     respond_to do |format|
-      if @message.save
+      if @message
         format.html { redirect_to @message, notice: 'Message was successfully created.' }
         format.json { render json: @message, status: :created, location: @message }
       else

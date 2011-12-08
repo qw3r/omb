@@ -5,8 +5,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :lockable, :omniauthable
 
   
-  has_many :received_messages_relation, as: :received_messageable, class_name: 'Message'
-  has_many :sent_messages_relation, as: :sent_messageable, class_name: 'Message'
+  has_many :received_messages_relation, foreign_key: 'recipient_id', class_name: 'Message'
+  has_many :sent_messages_relation, foreign_key: 'sender_id', class_name: 'Message'
    
   attr_accessor :login
   
@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
   end
   
   def send_message(to, args = {})
-    message = Message.create! message_attributes
+    message = Message.create! args
     sent_messages_relation << message
     to.received_messages_relation << message
     message
@@ -46,13 +46,13 @@ class User < ActiveRecord::Base
   end
 
   def delete_message(message)
-    if message.received_messageable == self
+    if message.recipient == self
       if message.deleted_by_recipient?
         message.update_attribute :purged_by_recipient, true
       else
         message.update_attribute :deleted_by_recipient, true
       end
-    elsif message.sent_messageable == self
+    elsif message.sender == self
       if message.deleted_by_sender?
         message.update_attribute :purged_by_sender, true
       else

@@ -10,12 +10,12 @@ class Message < ActiveRecord::Base
             flag_query_mode: :bit_operator 
             
 
-  belongs_to :received_messageable, polymorphic: true
-  belongs_to :sent_messageable, polymorphic: true
+  belongs_to :recipient, class_name: 'User'
+  belongs_to :sender, class_name: 'User'
   
   
-  scope :deleted, sender_deleted.recipient_deleted
-  scope :for_user, lambda { |*args| where(["(sent_messageable_id = :uid AND #{Message.flags_condition(args.last, :deleted_by_sender)} AND #{Message.not_purged_by_sender_condition}) OR (received_messageable_id = :uid AND #{Message.flags_condition(args.last, :deleted_by_recipient)} AND #{Message.not_purged_by_recipient_condition})", uid: args.first.id ]) }
+  scope :deleted, deleted_by_sender.deleted_by_recipient
+  scope :for_user, lambda { |*args| where(["(sender_id = :uid AND #{Message.flags_condition(args.last, :deleted_by_sender)} AND #{Message.not_purged_by_sender_condition}) OR (recipient_id = :uid AND #{Message.flags_condition(args.last, :deleted_by_recipient)} AND #{Message.not_purged_by_recipient_condition})", uid: args.first.id ]) }
                                                                               
   validates :subject, :body, presence: true
  
@@ -37,11 +37,11 @@ class Message < ActiveRecord::Base
   end
   
   def from
-    sent_messageable
+    sender
   end
     
   def to
-    received_messageable
+    recipient
   end
   
   def thread

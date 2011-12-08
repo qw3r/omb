@@ -1,0 +1,12 @@
+%h1
+  Listing thread:
+  = @messages.first.subject
+
+= render @messages
+
+- content_for :sidebar do
+  %p= link_to 'Create message', new_message_path
+  %p.divider
+  %p= link_to 'Inbox', '#'
+  %p= link_to 'Sent messages', '#'
+  %p= link_to 'Darfts', '#' 

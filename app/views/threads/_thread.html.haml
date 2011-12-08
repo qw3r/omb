@@ -1,0 +1,11 @@
+%tr
+  %td= thread.sender.email
+  %td= thread.recipient.email
+  %th= thread.descendants.last.sender.email if thread.descendants.any?
+  %td= thread.subject
+  %td= thread.subtree.count
+  %td= thread.descendants.last.created_at if thread.descendants.any?
+  
+  %td
+    = link_to 'Show', thread_path(thread)
+    =# link_to 'Destroy', thread, :confirm => 'Are you sure?', :method => :delete
