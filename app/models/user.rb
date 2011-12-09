@@ -7,12 +7,8 @@ class User < ActiveRecord::Base
   
   has_many :received_messages_relation, foreign_key: 'recipient_id', class_name: 'Message'
   has_many :sent_messages_relation, foreign_key: 'sender_id', class_name: 'Message'
-   
-  attr_accessor :login
   
-  attr_accessible :login, :firstname, :lastname, :username, :email, :password, :password_confirmation, :remember_me
-  
-  validates :username, uniqueness: {case_sensitive: false}
+  attr_accessible :firstname, :lastname, :email, :password, :password_confirmation, :remember_me
   
   def messages(deleted = false)
     Message.for_user self, deleted
@@ -73,18 +69,12 @@ class User < ActiveRecord::Base
   end
 
   # class methods
-  def self.find_for_authentication(warden_conditions)
-    conditions = warden_conditions.dup
-    login = conditions.delete(:login)
-    where(conditions).where(["lower(username) = :value OR lower(email) = :value", {value: login.downcase}]).first
-  end
-  
-  def self.find_for_oauth_facebook(access_token, signed_in_resource=nil)
+  def self.find_for_oauth_facebook(access_token, signed_in_resource = nil)
     data = access_token.extra.raw_info
     if user = User.find_by_email(data.email)
       user
     else # Create a user with a stub password. 
-      User.create!(email: data.email, password: Devise.friendly_token[0,20], username: data.email) 
+      User.create!(firstname: data.first_name, lastname: data.last_name, email: data.email, password: Devise.friendly_token[0,20]) 
     end
   end
   

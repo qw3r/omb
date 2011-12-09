@@ -3,3 +3,7 @@
 
 en:
   hello: "Hello world"
+
+  notifications:
+    new_message:
+      subject: You have a new message

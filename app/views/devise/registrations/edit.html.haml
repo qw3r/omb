@@ -1,16 +1,14 @@
-%h2
-  Edit #{resource_name.to_s.humanize}
+%h2 Edit #{resource_name.to_s.humanize}
 = twitter_bootstrap_form_for resource, as: resource_name, url: registration_path(resource_name), html: {method: :put} do |f|
-  = devise_error_messages!
+  .alert-message.error
+    = devise_error_messages!
   
   = f.inputs 'Personal informations' do
     = f.text_field :firstname
     = f.text_field :lastname
 
-  = f.inputs 'Login' do
-    = f.text_field :username
+  = f.inputs 'Authentication' do
     = f.email_field :email
-    
     = f.password_field :password do
       %span.help-block leave blank if you don't want to change it
     = f.password_field :password_confirmation, 'Confirm password'

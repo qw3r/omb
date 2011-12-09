@@ -13,14 +13,13 @@ gem 'haml'
 gem 'haml-rails'
 gem 'omniauth-facebook'
 gem 'ancestry'
-gem 'rails3-jquery-autocomplete'
+#gem 'rails3-jquery-autocomplete' # i'll write it myself
 gem 'flag_shih_tzu'
-
-gem 'rspec-rails', group: [:test, :development]
-
 gem 'twitter-bootstrap-rails'
 gem 'twitter_bootstrap_form_for'
+gem 'kaminari'
 
+gem 'rspec-rails', group: [:test, :development]
 group :test do
   gem 'database_cleaner'
   gem 'cucumber-rails'

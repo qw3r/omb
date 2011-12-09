@@ -1,6 +1,5 @@
 class MessagesController < ApplicationController
   before_filter :authenticate_user!
-  autocomplete :user, :email, full: true
   
   # GET /messages
   # GET /messages.json

@@ -1,7 +1,7 @@
 %h2 Sign in
 = twitter_bootstrap_form_for resource, as: resource_name, url: session_path(resource_name) do |f|
   = f.inputs do
-    = f.email_field :login, 'Email or Username'
+    = f.email_field :email, 'Email or Username'
     = f.password_field :password
   - if devise_mapping.rememberable?
     = f.toggles do

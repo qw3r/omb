@@ -1,0 +1,14 @@
+Hi
+= @message.recipient.name
+
+You've just got the following message from
+= @message.sender.name.
+
+Subject:
+= @message.subject
+
+Body:
+= @message.body
+
+You can reply visiting the url: 
+= link_to message_url(@message), message_url(@message)

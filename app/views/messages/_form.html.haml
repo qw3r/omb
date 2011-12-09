@@ -7,7 +7,7 @@
           %li= msg
   
   = f.inputs do
-    = f.autocomplete_field :to, 'To', autocomplete_user_email_messages_path, class: 'span8'
+    = f.text_field :to, 'To', class: 'span8', data: {autocomplete: users_path}
     
   = f.inputs do 
     = f.text_field :subject, class: 'span8'
