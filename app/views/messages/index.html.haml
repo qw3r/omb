@@ -1,13 +1,6 @@
-%h1 Listing threads
+%h1 Listing thread
 
-%table.zebra-striped
-  %tr
-    %th Author
-    %th Recipient
-    %th Subject
-    %th Date
-    %th
-  = render @messages
+= render @messages
 
 - content_for :sidebar do
   %p= link_to 'Create message', new_message_path
