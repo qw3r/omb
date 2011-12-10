@@ -1,8 +1,9 @@
-.row
-  .well.span10
-    %p= message.body
-    %p
-      = message.sender.email
-      = message.created_at
-      = link_to 'Reply', '#', class: 'btn'
-      = link_to 'Delete', '#', class: 'btn'
+.block-message.akert-message.info
+  %a.close{href: '#'} ×
+  %p
+    %strong= message.sender
+    %br/
+    = message.body
+  .alert-actions
+    = link_to 'Reply', '#', class: 'btn small'
+    = link_to 'Delete', '#', class: 'btn small'

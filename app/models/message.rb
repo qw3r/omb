@@ -14,8 +14,8 @@ class Message < ActiveRecord::Base
   belongs_to :sender, class_name: 'User'
   
   
-  scope :deleted, deleted_by_sender.deleted_by_recipient
-  scope :for_user, lambda { |*args| where(["(sender_id = :uid AND #{Message.flags_condition(args.last, :deleted_by_sender)} AND #{Message.not_purged_by_sender_condition}) OR (recipient_id = :uid AND #{Message.flags_condition(args.last, :deleted_by_recipient)} AND #{Message.not_purged_by_recipient_condition})", uid: args.first.id ]) }
+  scope :deleted, -> { deleted_by_sender.deleted_by_recipient }
+  scope :for_user, lambda {|*args| where(["(sender_id = :uid AND #{Message.flags_condition(args.last, :deleted_by_sender)} AND #{Message.not_purged_by_sender_condition}) OR (recipient_id = :uid AND #{Message.flags_condition(args.last, :deleted_by_recipient)} AND #{Message.not_purged_by_recipient_condition})", uid: args.first.id ]) }
                                                                               
   validates :subject, :body, presence: true
  

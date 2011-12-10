@@ -13,16 +13,18 @@
       %span.help-block leave blank if you don't want to change it
     = f.password_field :password_confirmation, 'Confirm password'
   
-  = f.inputs 'Authentication' do
+  = f.inputs do
     = f.password_field :current_password
 
   = f.actions do
     = f.submit 'Update'
 
-%h3 Cancel my account
-%p
-  Unhappy?
-  = link_to "Cancel my account", registration_path(resource_name), confirm: "Are you sure?", method: :delete
 
 - content_for :sidebar do
+  %p
+    Unhappy?
+    %br/
+    = link_to "Cancel Your account", registration_path(resource_name), confirm: "Are you sure?", method: :delete
+
+
   = link_to "Back", :back
