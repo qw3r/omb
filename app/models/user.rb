@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  serialize :facebook_data
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -74,7 +75,7 @@ class User < ActiveRecord::Base
     if user = User.find_by_email(data.email)
       user
     else # Create a user with a stub password. 
-      User.create!(firstname: data.first_name, lastname: data.last_name, email: data.email, password: Devise.friendly_token[0,20]) 
+      User.create!(firstname: data.first_name, lastname: data.last_name, email: data.email, password: Devise.friendly_token[0,20], facebook_data: data) 
     end
   end
   
@@ -82,6 +83,7 @@ class User < ActiveRecord::Base
     super.tap do |user|
       if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["user_hash"]
         user.email = data["email"]
+        user.facebook_data = data
       end
     end
   end

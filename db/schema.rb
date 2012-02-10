@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111209233502) do
+ActiveRecord::Schema.define(:version => 20120206221342) do
 
   create_table "messages", :force => true do |t|
     t.integer  "recipient_id"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(:version => 20111209233502) do
     t.string   "firstname"
     t.string   "lastname"
     t.boolean  "admin",                                 :default => false, :null => false
+    t.text     "facebook_data"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
